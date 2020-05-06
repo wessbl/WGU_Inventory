@@ -57,25 +57,14 @@ public class MainScreenController implements Initializable {
     private TextField product_search_field;
     @FXML
     private Button exit_button;
-    
     private Inventory inv;
     
-    public MainScreenController(Inventory inv)
-    {
-        this.inv = inv;
-    }
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO set on close request?
-        
-        //  Display Parts & Products
-        part_table.setItems(inv.getAllParts());
-        product_table.setItems(inv.getAllProducts());
-        //part_table.refresh(); //TODO
         
     }    
 
@@ -130,30 +119,34 @@ public class MainScreenController implements Initializable {
     {
         //  Get Loader and Stage
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/" + window + ".fxml"));
+        Parent parent = (Parent) loader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
         //  Set controller for new window
         switch(window)
         {
             case "ModifyPart":
-                loader.setController(new Controllers.ModifyPartController(inv));
+                ModifyPartController modPartCtrl = loader.getController();
+                modPartCtrl.setInventory(inv);
                 break;
             case "AddPart":
-                loader.setController(new Controllers.AddPartController(inv));
+                AddPartController addPartCtrl = loader.getController();
+                addPartCtrl.setInventory(inv);
                 break;
             case "ModifyProduct":
-                loader.setController(new Controllers.ModifyProductController(inv));
+                ModifyProductController modProdCtrl = loader.getController();
+                modProdCtrl.setInventory(inv);
                 break;
             case "AddProduct":
-                loader.setController(new Controllers.AddProductController(inv));
+                AddProductController addProdCtrl = loader.getController();
+                addProdCtrl.setInventory(inv);
                 break;
             default:
                 throw new IOException("Given invalid window descriptor: " + window);
         }
         
         //  Show new stage
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(parent);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -167,5 +160,10 @@ public class MainScreenController implements Initializable {
     public void setInventory(Inventory inv)
     {
         this.inv = inv;
+        
+        //  Display Parts & Products
+        part_table.setItems(inv.getAllParts());
+        product_table.setItems(inv.getAllProducts());
+        //part_table.refresh(); //TODO
     }
 }
