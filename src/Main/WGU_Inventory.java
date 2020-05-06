@@ -24,16 +24,18 @@ public class WGU_Inventory extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
+        //  Create Inventory
         Inventory inv = new Inventory();
         CreateData(inv);
         
+        //  Get loader & root
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/MainScreen.fxml"));
-	Controllers.MainScreenController c = new Controllers.MainScreenController(inv);
-	loader.setController(c);
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Parent root = (Parent) loader.load();
         
-        stage.setScene(scene);
+        //  Give inventory to controller
+	Controllers.MainScreenController c = loader.getController();
+        c.setInventory(inv);
+        stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
     }
