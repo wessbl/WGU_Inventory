@@ -60,19 +60,19 @@ public class WGU_Inventory extends Application {
         Part sns = new InHouse(3,   "Sensor",  15,  100, 20, 300, 42);
         
         Part gad = new Outsourced(323, "Gadget",  30, 6, 2, 20, "Gadget Co"   );
-        Part ion = new Outsourced(323, "Ionizer", 60, 2, 2, 10, "Ion Inc"     );
-        Part pla = new Outsourced(323, "Plasma",  99, 9, 7, 20, "Star City"   );
-        Part srv = new Outsourced(323, "Servo",   10, 5, 2, 10, "RoboCo"      );
-        Part wt  = new Outsourced(323, "Weight",  1,  6, 5, 20, "Lead Lmtd"   );
-        Part gr  = new Outsourced(323, "Gear",    2,  6, 2, 20, "Gary's Gears");
+        Part ion = new Outsourced(355, "Ionizer", 60, 2, 2, 10, "Ion Inc"     );
+        Part pla = new Outsourced(677, "Plasma",  99, 9, 7, 20, "Star City"   );
+        Part srv = new Outsourced(353, "Servo",   10, 5, 2, 10, "RoboCo"      );
+        Part wt  = new Outsourced(312, "Weight",  1,  6, 5, 20, "Lead Lmtd"   );
+        Part gr  = new Outsourced(554, "Gear",    2,  6, 2, 20, "Gary's Gears");
         
         //  Create products
         Product cmp = new Product(1, "Computer",      400, 50,  25, 100);
-        Product rbt = new Product(1, "Robot",         999, 25,  10, 50 );
-        Product car = new Product(1, "RC Car",        25,  100, 50, 200);
-        Product cam = new Product(1, "Camera",        50,  100, 50, 200);
-        Product ls  = new Product(1, "LightSword",    799, 25,  10, 50 );
-        Product brn = new Product(1, "Brain Implant", 999, 75,  50, 150);
+        Product rbt = new Product(2, "Robot",         999, 25,  10, 50 );
+        Product car = new Product(3, "RC Car",        25,  100, 50, 200);
+        Product cam = new Product(4, "Camera",        50,  100, 50, 200);
+        Product ls  = new Product(5, "LightSword",    799, 25,  10, 50 );
+        Product brn = new Product(6, "Brain Implant", 999, 75,  50, 150);
         
         //  Add Assoc Parts to all Products
         cmp.addAssociatedPart(nut);
@@ -106,7 +106,7 @@ public class WGU_Inventory extends Application {
         brn.addAssociatedPart(ion);
         
         //  Add items to inv
-        inv.addPart(wt);
+        inv.addPart(nut);
         inv.addPart(blt);
         inv.addPart(mtr);
         inv.addPart(sdr);

@@ -60,11 +60,6 @@ public class AddPartController implements Initializable {
     @FXML
     private Label com_mach_label;
     private Inventory inv;
-    
-    public AddPartController(Inventory inv)
-    {
-        this.inv = inv;
-    }
 
     /**
      * Initializes the controller class.
@@ -197,15 +192,16 @@ public class AddPartController implements Initializable {
     
     private void ChangeWindow(String window, Stage stage) throws IOException
     {
-        //  Get Loader
+        //  Get Loader & load it
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/" + window + ".fxml"));
+        Parent root = loader.load();
         
         //  Set controller for new window - always goes back to MainScreen
-	Controllers.MainScreenController c = new Controllers.MainScreenController(inv);
+	MainScreenController c = loader.getController();
+        c.setInventory(inv);
 	loader.setController(c);
         
         //  Show new stage
-        Parent root = loader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);

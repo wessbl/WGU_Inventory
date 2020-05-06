@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -56,11 +57,14 @@ public class AddProductController implements Initializable {
     @FXML
     private TableView<?> added_parts_table;
     private Inventory inv;
-    
-    public AddProductController(Inventory inv)
-    {
-        this.inv = inv;
-    }
+    @FXML
+    private TableColumn<?, ?> id;
+    @FXML
+    private TableColumn<?, ?> name;
+    @FXML
+    private TableColumn<?, ?> stock;
+    @FXML
+    private TableColumn<?, ?> price;
 
     /**
      * Initializes the controller class.
@@ -103,14 +107,15 @@ public class AddProductController implements Initializable {
     {
         //  Get Loader and Stage
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/" + window + ".fxml"));
+        Parent root = loader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
         //  Set controller for new window - always goes back to MainScreen
-	Controllers.MainScreenController c = new Controllers.MainScreenController(inv);
+	MainScreenController c = loader.getController();
+        c.setInventory(inv);
 	loader.setController(c);
         
         //  Show new stage
-        Parent root = loader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);

@@ -10,7 +10,9 @@ import Model.Part;
 import Model.Product;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +20,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -64,13 +70,31 @@ public class MainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO set on close request?
-        
     }    
 
     @FXML
     private void delete_part(MouseEvent event) {
-        // TODO
+        Part selection = part_table.getSelectionModel().getSelectedItem();
+        if (selection != null && confirm("Delete Part", 
+                "Are you sure you want to delete this part?", 
+                "This cannot be undone."))
+            inv.deletePart(selection);
+        searchPart();
+        part_table.refresh();
+    }
+    
+    private boolean confirm(String title, String header, String text)
+    {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(text);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @FXML
@@ -85,12 +109,27 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void search_part(MouseEvent event) {
-        //TODO
+        searchPart();
+    }
+    
+    private void searchPart()
+    {
+        String keyword = part_search_field.getText().trim();
+        ObservableList<Part> parts = inv.lookupPart(keyword);
+        part_table.setItems(parts);
+        if (parts.isEmpty())
+            part_search_field.requestFocus();
     }
 
     @FXML
     private void delete_product(MouseEvent event) {
-        //TODO
+        Product selection = product_table.getSelectionModel().getSelectedItem();
+        if (selection != null && confirm("Delete Part", 
+                "Are you sure you want to delete this part?", 
+                "This cannot be undone."))
+            inv.deleteProduct(selection);
+        searchProduct();
+        part_table.refresh();
     }
 
     @FXML
@@ -105,13 +144,22 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void search_product(MouseEvent event) {
-        //  TODO
+        searchProduct();
+    }
+    
+    private void searchProduct()
+    {
+        String keyword = product_search_field.getText().trim();
+        ObservableList<Product> prods = inv.lookupProduct(keyword);
+        product_table.setItems(prods);
+        if (prods.isEmpty())
+            product_search_field.requestFocus();
     }
 
     @FXML
     private void exit(MouseEvent event) {
         Stage stage = (Stage) exit_button.getScene().getWindow();
-        //TODO Unsaved changes?
+        //  TODO For SQL: Unsaved Changes
         stage.close();
     }
     
@@ -154,7 +202,10 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void onEnter(ActionEvent event) {
-        // TODO
+        if (event.getSource() == part_search_field)
+            searchPart();
+        else if (event.getSource() == product_search_field)
+            searchProduct();
     }
     
     public void setInventory(Inventory inv)
@@ -164,6 +215,16 @@ public class MainScreenController implements Initializable {
         //  Display Parts & Products
         part_table.setItems(inv.getAllParts());
         product_table.setItems(inv.getAllProducts());
-        //part_table.refresh(); //TODO
+    }
+    
+    @FXML
+    public void quick_search_part(KeyEvent event)
+    {
+        searchPart();
+    }
+
+    @FXML
+    private void quick_search_product(KeyEvent event) {
+        searchProduct();
     }
 }

@@ -9,15 +9,15 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainScreenController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -75,7 +75,7 @@
                      <children>
                         <ScrollPane layoutX="18.0" layoutY="45.0" prefHeight="149.0" prefWidth="421.0">
                            <content>
-                              <TableView fx:id="part_table" minHeight="-Infinity" minWidth="-Infinity" prefHeight="148.0" prefWidth="405.0">
+                              <TableView fx:id="part_table" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="418.0">
                                 <columns>
                                   <TableColumn minWidth="100.0" prefWidth="75.0" text="Part ID">
                                     <cellValueFactory>
@@ -107,7 +107,7 @@
                            </font>
                         </Label>
                         <Button fx:id="part_search_button" layoutX="372.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#search_part" prefHeight="25.0" prefWidth="68.0" text="Search" />
-                        <TextField fx:id="part_search_field" layoutX="223.0" layoutY="12.0" onAction="#onEnter" />
+                        <TextField fx:id="part_search_field" layoutX="223.0" layoutY="12.0" onAction="#onEnter" onKeyReleased="#quick_search_part" />
                         <Button fx:id="delete_part_button" layoutX="271.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#delete_part" prefHeight="25.0" prefWidth="68.0" text="Delete" />
                         <Button fx:id="modify_part_button" layoutX="195.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#modify_part" prefHeight="25.0" prefWidth="68.0" text="Modify" />
                         <Button fx:id="add_part_button" layoutX="119.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#add_part" prefHeight="25.0" prefWidth="68.0" text="Add" />
@@ -122,7 +122,7 @@
                         </Label>
                         <ScrollPane layoutX="18.0" layoutY="45.0" prefHeight="149.0" prefWidth="421.0">
                            <content>
-                              <TableView fx:id="product_table" minHeight="-Infinity" minWidth="-Infinity" prefHeight="148.0" prefWidth="405.0">
+                              <TableView fx:id="product_table" minHeight="-Infinity" minWidth="-Infinity" prefHeight="147.0" prefWidth="419.0">
                                  <columns>
                                      <TableColumn minWidth="100.0" prefWidth="75.0" text="Product ID">
                                        <cellValueFactory>
@@ -149,7 +149,7 @@
                            </content>
                         </ScrollPane>
                         <Button fx:id="product_search_button" layoutX="372.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#search_product" prefHeight="25.0" prefWidth="68.0" text="Search" />
-                        <TextField fx:id="product_search_field" layoutX="223.0" layoutY="11.0" onAction="#onEnter" />
+                        <TextField fx:id="product_search_field" layoutX="223.0" layoutY="11.0" onAction="#onEnter" onKeyReleased="#quick_search_product" />
                         <Button fx:id="delete_product_button" layoutX="271.0" layoutY="205.0" mnemonicParsing="false" onMouseClicked="#delete_product" prefHeight="25.0" prefWidth="68.0" text="Delete" />
                         <Button fx:id="modify_product_button" layoutX="195.0" layoutY="205.0" mnemonicParsing="false" onMouseClicked="#modify_product" prefHeight="25.0" prefWidth="68.0" text="Modify" />
                         <Button fx:id="add_product_button" layoutX="119.0" layoutY="205.0" mnemonicParsing="false" onMouseClicked="#add_product" prefHeight="25.0" prefWidth="68.0" text="Add" />

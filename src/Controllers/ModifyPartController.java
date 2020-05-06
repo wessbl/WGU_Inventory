@@ -54,11 +54,6 @@ public class ModifyPartController implements Initializable {
     @FXML
     private TextField com_mach_field;
     private Inventory inv;
-    
-    public ModifyPartController(Inventory inv)
-    {
-        this.inv = inv;
-    }
 
     /**
      * Initializes the controller class.
@@ -191,15 +186,16 @@ public class ModifyPartController implements Initializable {
     
     private void ChangeWindow(String window, Stage stage) throws IOException
     {
-        //  Get Loader
+        //  Get Loader & load it
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/" + window + ".fxml"));
+        Parent root = loader.load();
         
         //  Set controller for new window - always goes back to MainScreen
-	Controllers.MainScreenController c = new Controllers.MainScreenController(inv);
+	MainScreenController c = loader.getController();
+        c.setInventory(inv);
 	loader.setController(c);
         
         //  Show new stage
-        Parent root = loader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);

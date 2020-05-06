@@ -20,6 +20,7 @@ public class Inventory {
     
     public void addPart(Part newPart)
     {
+        //TODO prohibit duplicates (maybe only dupe ID's... and not sure this class assigns those)
         allParts.add(newPart);
     }
     
@@ -50,9 +51,9 @@ public class Inventory {
     {
         //  Add parts with matching string sequences to "find" list
         List<Part> find = new ArrayList<Part>();
-        partName = partName.trim();
+        partName = partName.trim().toLowerCase();
         for (Part p : allParts)
-            if (p.getName().contains(partName))
+            if (p.getName().toLowerCase().contains(partName))
                 find.add(p);
         
         //  Report what was found as an ObservableList
@@ -64,9 +65,9 @@ public class Inventory {
     {
         //  Add products with matching string sequences to "find" list
         List<Product> find = new ArrayList<Product>();
-        productName = productName.trim();
+        productName = productName.trim().toLowerCase();
         for (Product p : allProducts)
-            if (p.getName().contains(productName))
+            if (p.getName().toLowerCase().contains(productName))
                 find.add(p);
         
         //  Report what was found as an ObservableList
