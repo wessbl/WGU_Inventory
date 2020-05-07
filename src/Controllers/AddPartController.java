@@ -5,10 +5,13 @@
  */
 package Controllers;
 
+import Model.InHouse;
 import Model.Inventory;
+import Model.Outsourced;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,13 +47,13 @@ public class AddPartController implements Initializable {
     @FXML
     private TextField name_field;
     @FXML
-    private TextField inv_field;
+    private TextField stock_field;
     @FXML
     private TextField price_field;
     @FXML
     private TextField max_field;
     @FXML
-    private TextField com_mach_field;
+    private TextField com_mach_field;   // Name: company/machine field
     @FXML
     private TextField min_field;
     @FXML
@@ -60,20 +63,18 @@ public class AddPartController implements Initializable {
     @FXML
     private Label com_mach_label;
     private Inventory inv;
+    private int part_id;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO set on close request?
-
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // Default to In-House option
         id_field.setDisable(true);
         com_mach_label.setText("Machine ID");
         com_mach_field.setPromptText("Mach ID");
-        
-        //  TODO auto-populate values 
     }
 
     @FXML
@@ -92,7 +93,7 @@ public class AddPartController implements Initializable {
             name_field.requestFocus();
             return false;
         }
-        // TODO is company/machine id necessary?
+        
         if (com_mach_field.getText().trim().isEmpty())
         {
             InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field cannot be empty");
@@ -100,13 +101,13 @@ public class AddPartController implements Initializable {
             return false;
         }
         
-        //  Check inv is an int
-        try{int inv = Integer.parseInt(inv_field.getText());}
+        //  Check stock is an int
+        try{int stock = Integer.parseInt(stock_field.getText());}
         catch (NumberFormatException e)
         {
-            //  Error window: "Inv must be an integer"
-            InvalidValueError("The value for \"Inv\" must be an integer.");
-            inv_field.requestFocus();
+            //  Error window: "Stock must be an integer"
+            InvalidValueError("The value for \"Stock\" must be an integer.");
+            stock_field.requestFocus();
             return false;
         }
         
@@ -118,12 +119,13 @@ public class AddPartController implements Initializable {
             price_field.requestFocus();
             return false;
         }
+        double price = Double.parseDouble(price_field.getText());
         
         //  Check if max is an int
         try{int max = Integer.parseInt(max_field.getText());}
         catch (NumberFormatException e)
         {
-            //  TODO Error window: "Max must be an integer"
+            //  Error window: "Max must be an integer"
             InvalidValueError("The value for \"Max\" must be an integer.");
             max_field.requestFocus();
             return false;
@@ -138,10 +140,24 @@ public class AddPartController implements Initializable {
             return false;
         }
         
-        // Check for valid integer values: Min, Max, Inv
-        int inv = Integer.parseInt(inv_field.getText());
-        int min = Integer.parseInt(min_field.getText());
-        int max = Integer.parseInt(max_field.getText());
+        //  Check if machine id is an int (for In-House
+        if (inhouse_button.isSelected())
+        {
+            try
+            {
+                Integer.parseInt(com_mach_field.getText());
+            } catch (NumberFormatException e)
+            {
+                InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field must be an int");
+                com_mach_field.requestFocus();
+                return false;
+            }
+        }
+        
+        // Check for valid integer values: Min, Max, Stock
+        int stock = Integer.parseInt(stock_field.getText() );
+        int min   = Integer.parseInt(min_field.getText()   );
+        int max   = Integer.parseInt(max_field.getText()   );
         
         if (min < 0)
         {
@@ -163,14 +179,38 @@ public class AddPartController implements Initializable {
             min_field.requestFocus();
             return false;
         }
-        if (inv > max || inv < min)
+        if (stock > max || stock < min)
         {
-            InvalidValueError("The value for \"Inv\" must be between Min and Max.");
-            inv_field.requestFocus();
+            InvalidValueError("The value for \"Stock\" must be between Min and Max.");
+            stock_field.requestFocus();
             return false;
         }
         
-        // TODO Do your saving...
+        // Save the data:
+        if (inhouse_button.isSelected())
+        {
+            inv.addPart(new InHouse(
+                    part_id, 
+                    name_field.getText().trim(), 
+                    price,
+                    stock,
+                    min,
+                    max,
+                    Integer.parseInt(com_mach_field.getText())
+            ));
+        }
+        else if (outsourced_button.isSelected())
+        {
+            inv.addPart(new Outsourced(
+                    part_id,
+                    name_field.getText().trim(),
+                    price,
+                    stock,
+                    min,
+                    max,
+                    com_mach_field.getText().trim()
+            ));
+        }
         
         return true;
     }
@@ -242,8 +282,10 @@ public class AddPartController implements Initializable {
         }
     }
     
-    public void setInventory(Inventory inv)
+    //  Gives class necessary variables from instantiating class
+    public void setup(Inventory inv, int part_id)
     {
         this.inv = inv;
+        this.part_id = part_id;
     }
 }

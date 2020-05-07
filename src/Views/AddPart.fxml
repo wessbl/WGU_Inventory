@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddPartController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddPartController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -93,13 +93,13 @@
                <children>
                   <Label prefHeight="18.0" prefWidth="101.0" text="ID" />
                   <Label prefHeight="18.0" prefWidth="101.0" text="Name" GridPane.rowIndex="1" />
-                  <Label prefHeight="18.0" prefWidth="101.0" text="Inv" GridPane.rowIndex="2" />
+                  <Label prefHeight="18.0" prefWidth="101.0" text="Stock" GridPane.rowIndex="2" />
                   <Label prefHeight="18.0" prefWidth="101.0" text="Price/Cost" GridPane.rowIndex="3" />
                   <Label prefHeight="18.0" prefWidth="101.0" text="Max" GridPane.rowIndex="4" />
                   <Label fx:id="com_mach_label" prefHeight="18.0" prefWidth="101.0" text="Company Name" GridPane.rowIndex="5" />
                   <TextField fx:id="id_field" editable="false" onAction="#onEnter" promptText="AutoGen - Disabled" GridPane.columnIndex="1" />
                   <TextField fx:id="name_field" onAction="#onEnter" promptText="Part Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="inv_field" onAction="#onEnter" promptText="Inv" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="stock_field" onAction="#onEnter" promptText="Stock" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="price_field" onAction="#onEnter" promptText="Price/Cost" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="max_field" onAction="#onEnter" prefHeight="26.0" prefWidth="58.0" promptText="Max" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextField fx:id="com_mach_field" onAction="#onEnter" promptText="Company Name" GridPane.columnIndex="1" GridPane.rowIndex="5" />

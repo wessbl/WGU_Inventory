@@ -200,7 +200,7 @@ public class MainScreenController implements Initializable {
                 break;
             case "AddPart":
                 AddPartController addPartCtrl = loader.getController();
-                addPartCtrl.setInventory(inv);
+                addPartCtrl.setup(inv, getPartID());
                 break;
             case "ModifyProduct":
                 ModifyProductController modProdCtrl = loader.getController();
@@ -228,7 +228,28 @@ public class MainScreenController implements Initializable {
         stage.setResizable(false);
         stage.show();
     }
-
+    
+    //  Generates next Part ID
+    private int getPartID()
+    {
+        int max = 0;
+        for (Part p : inv.getAllParts())
+            if (p.getId() > max)
+                max = p.getId();
+        return max + 1;
+    }
+    
+    //  Generates next Product ID
+    private int getProductID()
+    {
+        int max = 0;
+        for (Product p : inv.getAllProducts())
+            if (p.getId() > max)
+                max = p.getId();
+        return max + 1;
+    }
+    
+    //  Search Shortcut by pressing enter
     @FXML
     private void onEnter(ActionEvent event) {
         if (event.getSource() == part_search_field)
@@ -237,6 +258,7 @@ public class MainScreenController implements Initializable {
             searchProduct();
     }
     
+    //  Set the current inventory from instantiating class
     public void setInventory(Inventory inv)
     {
         this.inv = inv;
@@ -246,12 +268,15 @@ public class MainScreenController implements Initializable {
         product_table.setItems(inv.getAllProducts());
     }
     
+    //  Initiate search with every change in search field
     @FXML
     public void quick_search_part(KeyEvent event)
     {
         searchPart();
     }
 
+    
+    //  Initiate search with every change in search field
     @FXML
     private void quick_search_product(KeyEvent event) {
         searchProduct();
