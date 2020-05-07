@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -79,6 +82,10 @@ public class MainScreenController implements Initializable {
                 "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
             inv.deletePart(selection);
+        else
+        {
+            invalidValueError("Invalid selection", "Please select a part to be deleted.");
+        }
         searchPart();
         part_table.refresh();
     }
@@ -128,8 +135,22 @@ public class MainScreenController implements Initializable {
                 "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
             inv.deleteProduct(selection);
+        else
+        {
+            invalidValueError("Invalid selection", "Please select a product to be deleted.");
+        }
         searchProduct();
         part_table.refresh();
+    }
+    
+    private void invalidValueError(String header, String msg)
+    {
+        // Error window
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(header);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 
     @FXML
@@ -192,6 +213,14 @@ public class MainScreenController implements Initializable {
             default:
                 throw new IOException("Given invalid window descriptor: " + window);
         }
+        //  Add confirmation for window close
+        Platform.setImplicitExit(false);
+        stage.setOnCloseRequest((WindowEvent event1) -> {
+            if(!confirm("Exit",
+                    "Are you sure you want to exit the application?",
+                    "Your changes will not be saved."))
+                event1.consume();
+        });
         
         //  Show new stage
         Scene scene = new Scene(parent);
