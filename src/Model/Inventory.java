@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: Inventory
+
+    This class holds and controls all parts and products for the project.
  */
 package Model;
 
@@ -18,17 +23,30 @@ public class Inventory {
     private ObservableList<Part> allParts = FXCollections.observableArrayList();
     private ObservableList<Product> allProducts = FXCollections.observableArrayList();
     
+    /**
+     * Adds a part to the inventory
+     * @param newPart 
+     */
     public void addPart(Part newPart)
     {
         //TODO prohibit duplicates (maybe only dupe ID's... and not sure this class assigns those)
         allParts.add(newPart);
     }
     
+    /**
+     * Adds a product to the inventory
+     * @param newProduct 
+     */
     public void addProduct(Product newProduct)
     {
         allProducts.add(newProduct);
     }
     
+    /**
+     * Gets a part from a part's ID
+     * @param partId
+     * @return 
+     */
     public Part lookupPart(int partId)
     {
         for (Part p : allParts)
@@ -38,6 +56,11 @@ public class Inventory {
         return new Part(0, "", 0, 0, 0, 0);
     }
     
+    /**
+     * Gets a product from a product's ID
+     * @param productId
+     * @return 
+     */
     public Product lookupProduct(int productId)
     {
         for (Product p : allProducts)
@@ -47,6 +70,11 @@ public class Inventory {
         return new Product(0, "", 0, 0, 0, 0);
     }
     
+    /**
+     * Gets all parts that contain a given string in their name
+     * @param partName
+     * @return 
+     */
     public ObservableList<Part> lookupPart(String partName)
     {
         //  Add parts with matching string sequences to "find" list
@@ -61,6 +89,11 @@ public class Inventory {
         return found;
     }
     
+    /**
+     * Gets all products that contain a given string in their name
+     * @param productName
+     * @return 
+     */
     public ObservableList<Product> lookupProduct(String productName)
     {
         //  Add products with matching string sequences to "find" list
@@ -75,18 +108,33 @@ public class Inventory {
         return found;
     }
     
+    /**
+     * Updates part variables
+     * @param index
+     * @param newPart 
+     */
     public void updatePart(int index, Part newPart)
     {
         Part p = lookupPart(index);
         p = newPart;   //TODO test
     }
     
+    /**
+     * Updates product variables
+     * @param index
+     * @param newProduct 
+     */
     public void updateProduct(int index, Product newProduct)
     {
         Product p = lookupProduct(index);
         p = newProduct;
     }
     
+    /**
+     * Removes a part from the inventory
+     * @param selectedPart
+     * @return 
+     */
     public boolean deletePart(Part selectedPart)
     {
         if (allParts.contains(selectedPart))
@@ -97,6 +145,11 @@ public class Inventory {
         return false;   //TODO I'm assuming boolean is to report success?
     }
     
+    /**
+     * Removes a product from the inventory
+     * @param selectedProduct
+     * @return 
+     */
     public boolean deleteProduct(Product selectedProduct)
     {
         if (allProducts.contains(selectedProduct))
@@ -107,11 +160,19 @@ public class Inventory {
         return false;
     }
     
+    /**
+     * Gets a list of all parts
+     * @return 
+     */
     public ObservableList<Part> getAllParts()
     {
         return allParts;
     }
     
+    /**
+     * Gets a list of all products
+     * @return 
+     */
     public ObservableList<Product> getAllProducts()
     {
         return allProducts;

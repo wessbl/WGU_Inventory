@@ -84,13 +84,22 @@ public class ModifyPartController implements Initializable {
         com_mach_field.setPromptText("Mach ID");
     }
 
+    /**
+     * Goes back to MainScreen immediately, no confirmation
+     * @param event (cancel_button click)
+     * @throws IOException 
+     */
     @FXML
     private void cancel(MouseEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ChangeWindow("MainScreen", stage);
     }
 
-    //  A generic method that checks the entered data, and saves if valid. Returns success or fail
+    /**
+     * A generic method that checks the entered data, and saves if valid. If
+     * not valid, presents an error window for user and cancels the save. 
+     * @return success or fail boolean.
+     */    
     private boolean save()
     {
         String name = name_field.getText().trim();
@@ -263,11 +272,10 @@ public class ModifyPartController implements Initializable {
         return true;
     }
     
-    private int stringInt (String num)
-    {
-        return Integer.parseInt(num);
-    }
-    
+    /**
+     * Popup window method, when a value is incorrect for a situation
+     * @param msg error message
+     */
     private void InvalidValueError(String msg)
     {
         // Error window
@@ -278,6 +286,12 @@ public class ModifyPartController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Changes the view/controller back to MainScreen
+     * @param window A text that represents the window to go to
+     * @param stage The current stage
+     * @throws IOException 
+     */
     private void ChangeWindow(String window, Stage stage) throws IOException
     {
         //  Get Loader & load it
@@ -296,6 +310,10 @@ public class ModifyPartController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Changes form for an In-House part
+     * @param event (inHouse_button click)
+     */
     @FXML
     private void in_house(MouseEvent event) {
         com_mach_field.setText("");
@@ -303,6 +321,10 @@ public class ModifyPartController implements Initializable {
         com_mach_field.setPromptText("Mach ID");
     }
 
+    /**
+     * Changes form for an Outsourced part
+     * @param event (outsourced_button click)
+     */
     @FXML
     private void outsourced(MouseEvent event) {
         com_mach_field.setText("");
@@ -310,6 +332,11 @@ public class ModifyPartController implements Initializable {
         com_mach_field.setPromptText("Company Name");
     }
 
+    /**
+     * User can push enter in a field to save
+     * @param event (enter is pressed while editing any field on the form)
+     * @throws IOException 
+     */
     @FXML
     private void onEnter(ActionEvent event) throws IOException {
         if (save())
@@ -320,6 +347,11 @@ public class ModifyPartController implements Initializable {
         }
     }
 
+    /**
+     * Save button
+     * @param event (save_button click)
+     * @throws IOException 
+     */
     @FXML
     private void save_click(MouseEvent event) throws IOException {
         if(save())
@@ -330,6 +362,12 @@ public class ModifyPartController implements Initializable {
         }
     }
     
+    /**
+     * Gives this class necessary variables from instantiating class. Must be
+     * called before switching to this controller's window.
+     * @param inv the inventory
+     * @param part_id the part to modify
+     */
     public void setup(Inventory inv, Part p)
     {
         this.inv = inv;

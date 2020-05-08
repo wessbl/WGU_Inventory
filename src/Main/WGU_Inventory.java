@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: WGU_Inventory
+
+    This class has the main method, and sets up the first UI with sample data.
  */
 package Main;
 
@@ -47,6 +52,10 @@ public class WGU_Inventory extends Application {
         launch(args);
     }
 
+    /**
+     * Gives an Inventory object some sample data to work with
+     * @param inv 
+     */
     private void AddSampleData(Inventory inv) {
         //  Create Parts
         Part nut = new InHouse(418, "Nut",     1.0, 100, 20, 300, 12);      //TODO this one labeled as Part? Should I do that to all?

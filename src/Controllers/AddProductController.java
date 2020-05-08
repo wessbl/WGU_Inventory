@@ -92,23 +92,39 @@ public class AddProductController implements Initializable {
         id_field.setDisable(true);
     }    
 
+    /**
+     * Searching by clicking button
+     * @param event (search_button click)
+     */
     @FXML
     private void button_search(MouseEvent event)
     {
         search();
     }
     
+    /**
+     * Searching by clicking enter in search_field
+     * @param event 
+     */
     @FXML
     private void onEnter(ActionEvent event) {
         search();
     }
     
+    /**
+     * Searching by typing any key in search_field
+     * @param event (key pressed in search_field)
+     */
     @FXML
     private void quick_search(KeyEvent event)
     {
         search();
     }
     
+    /**
+     * Narrows down the items in part_table to only those whose name includes
+     * the keyword in search_field
+     */
     private void search()
     {
         String keyword = search_field.getText().trim();
@@ -118,11 +134,20 @@ public class AddProductController implements Initializable {
             search_field.requestFocus();
     }
 
+    /**
+     * Goes back to MainScreen immediately, no confirmation
+     * @param event (cancel_button click)
+     * @throws IOException 
+     */
     @FXML
     private void cancel(MouseEvent event) throws IOException {
         ChangeWindow("MainScreen", event);
     }
 
+    /**
+     * Checks the entered data, and saves if valid. If not valid, presents an 
+     * error window for user and cancels the save.
+     */
     @FXML
     private void save(MouseEvent event) throws IOException {
         /******* Validate Data *******/
@@ -224,6 +249,10 @@ public class AddProductController implements Initializable {
         ChangeWindow("MainScreen", event);
     }
     
+    /**
+     * Popup window method, when a value is incorrect for a situation
+     * @param msg error message
+     */
     private void InvalidValueError(String msg)
     {
         // Error window
@@ -234,7 +263,10 @@ public class AddProductController implements Initializable {
         alert.showAndWait();
     }
 
-    //  Add a part from the part_table to the added_parts_table
+    /**
+     * Add a part from the part_table to the added_parts_table
+     * @param event (add_button click)
+     */
     @FXML
     private void add(MouseEvent event) {
         Part p = part_table.getSelectionModel().getSelectedItem();
@@ -251,7 +283,11 @@ public class AddProductController implements Initializable {
         parts.add(p);
     }
     
-    //  Remove part from list of added products, display in table. Refresh added_parts_table
+    /**
+     * Remove part from list of added products, display in table. Refresh 
+     * added_parts_table
+     * @param event 
+     */
     @FXML
     private void delete(MouseEvent event)
     {
@@ -265,7 +301,11 @@ public class AddProductController implements Initializable {
         search();
     }
     
-    //  Creates error popup
+    /**
+     * Creates error popup
+     * @param header
+     * @param msg 
+     */
     private void invalidValueError(String header, String msg)
     {
         // Error window
@@ -276,6 +316,12 @@ public class AddProductController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Changes the view/controller back to MainScreen
+     * @param windowA text that represents the window to go to
+     * @param event
+     * @throws IOException 
+     */
     private void ChangeWindow(String window, MouseEvent event) throws IOException
     {
         //  Get Loader and Stage
@@ -295,6 +341,12 @@ public class AddProductController implements Initializable {
         stage.show();
     }
     
+    /**
+     * Gives this class necessary variables from instantiating class. Must be
+     * called before switching to this controller's window.
+     * @param inv the inventory
+     * @param product_id the product id to give the item
+     */
     public void setup(Inventory inv, int product_id)
     {
         this.inv = inv;

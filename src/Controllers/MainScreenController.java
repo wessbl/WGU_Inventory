@@ -85,6 +85,10 @@ public class MainScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }    
 
+    /**
+     * Deletes the selected part in the list, or gives error and cancels
+     * @param event 
+     */
     @FXML
     private void delete_part(MouseEvent event) {
         Part selection = part_table.getSelectionModel().getSelectedItem();
@@ -127,6 +131,13 @@ public class MainScreenController implements Initializable {
         searchPart();
     }
     
+    /**
+     * A confirmation popup, fields indicate parts of the popup
+     * @param title
+     * @param header
+     * @param text
+     * @return 
+     */
     private boolean confirm(String title, String header, String text)
     {
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -137,6 +148,12 @@ public class MainScreenController implements Initializable {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     * Gives selected part to ModifyPart controller & switches view, or gives 
+     * error and cancels
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void modify_part(MouseEvent event) throws IOException {
         if (part_table.getSelectionModel().getSelectedItem() == null)
@@ -147,16 +164,29 @@ public class MainScreenController implements Initializable {
         ChangeWindow("ModifyPart", event);
     }
 
+    /**
+     * Switches to AddPart controller & switches view
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void add_part(MouseEvent event) throws IOException {
         ChangeWindow("AddPart", event);
     }
 
+    /**
+     * Searches parts by clicking button
+     * @param event 
+     */
     @FXML
     private void search_part(MouseEvent event) {
         searchPart();
     }
     
+    /**
+     * Narrows down the items in part_table to only those whose name includes
+     * the keyword in search_field
+     */
     private void searchPart()
     {
         String keyword = part_search_field.getText().trim();
@@ -166,6 +196,10 @@ public class MainScreenController implements Initializable {
             part_search_field.requestFocus();
     }
 
+    /**
+     * Deletes the selected product in the list, or gives error and cancels
+     * @param event 
+     */
     @FXML
     private void delete_product(MouseEvent event) {
         Product selection = product_table.getSelectionModel().getSelectedItem();
@@ -181,6 +215,12 @@ public class MainScreenController implements Initializable {
         searchProduct();
     }
     
+    /**
+     * Popup window method, when a value is incorrect for a situation. Params
+     * represent different parts of the popup.
+     * @param header
+     * @param msg 
+     */
     private void invalidValueError(String header, String msg)
     {
         // Error window
@@ -191,6 +231,12 @@ public class MainScreenController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Gives selected part to ModifyProduct controller & switches view, or gives 
+     * error and cancels
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void modify_product(MouseEvent event) throws IOException {
         if (product_table.getSelectionModel().getSelectedItem() == null)
@@ -201,16 +247,29 @@ public class MainScreenController implements Initializable {
         ChangeWindow("ModifyProduct", event);
     }
 
+    /**
+     * Switches to AddProduct controller & switches view
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void add_product(MouseEvent event) throws IOException {
         ChangeWindow("AddProduct", event);
     }
 
+    /**
+     * Search products by clicking button
+     * @param event 
+     */
     @FXML
     private void search_product(MouseEvent event) {
         searchProduct();
     }
     
+    /**
+     * Narrows down the items in part_table to only those whose name includes
+     * the keyword in search_field
+     */
     private void searchProduct()
     {
         String keyword = product_search_field.getText().trim();
@@ -220,6 +279,10 @@ public class MainScreenController implements Initializable {
             product_search_field.requestFocus();
     }
 
+    /**
+     * Another way to exit the program, exit_button
+     * @param event (exit_button clicked)
+     */
     @FXML
     private void exit(MouseEvent event) {
         Stage stage = (Stage) exit_button.getScene().getWindow();
@@ -228,6 +291,13 @@ public class MainScreenController implements Initializable {
         Platform.exit();
     }
     
+    /**
+     * Changes the view/controller to another window, and gives variables and 
+     * closing rules to the windows.
+     * @param windowA text that represents the window to go to
+     * @param event contains which button was clicked
+     * @throws IOException 
+     */
     private void ChangeWindow(String window, MouseEvent event) throws IOException
     {
         //  Get Loader and Stage
@@ -282,7 +352,10 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
     
-    //  Generates next Part ID
+    /**
+     * Generates next Part ID
+     * @return part id
+     */
     private int genPartID()
     {
         int max = 0;
@@ -292,7 +365,10 @@ public class MainScreenController implements Initializable {
         return max + 1;
     }
     
-    //  Generates next Product ID
+    /**
+     * Generates next Product ID
+     * @return product id
+     */
     private int genProductID()
     {
         int max = 0;
@@ -302,7 +378,10 @@ public class MainScreenController implements Initializable {
         return max + 1;
     }
     
-    //  Search Shortcut by pressing enter
+    /**
+     * Search Shortcut by pressing enter
+     * @param event (enter clicked in either search field)
+     */
     @FXML
     private void onEnter(ActionEvent event) {
         if (event.getSource() == part_search_field)
@@ -311,7 +390,10 @@ public class MainScreenController implements Initializable {
             searchProduct();
     }
     
-    //  Set the current inventory from instantiating class
+    /**
+     * Set the current inventory from instantiating class
+     * @param inv Inventory object
+     */
     public void setInventory(Inventory inv)
     {
         this.inv = inv;
@@ -321,7 +403,10 @@ public class MainScreenController implements Initializable {
         product_table.setItems(inv.getAllProducts());
     }
     
-    //  Initiate search with every change in search field
+    /**
+     * Initiate search with every change in search field
+     * @param event 
+     */
     @FXML
     public void quick_search_part(KeyEvent event)
     {
@@ -329,7 +414,10 @@ public class MainScreenController implements Initializable {
     }
 
     
-    //  Initiate search with every change in search field
+    /**
+     * Initiate search with every change in search field
+     * @param event 
+     */
     @FXML
     private void quick_search_product(KeyEvent event) {
         searchProduct();

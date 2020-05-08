@@ -326,8 +326,8 @@ public class AddPartController implements Initializable {
     /**
      * Gives this class necessary variables from instantiating class. Must be
      * called before switching to this controller's window.
-     * @param inv
-     * @param part_id 
+     * @param inv the inventory
+     * @param part_id the new part_id to give the item
      */
     public void setup(Inventory inv, int part_id)
     {

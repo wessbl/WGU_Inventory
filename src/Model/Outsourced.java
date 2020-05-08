@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: Outsourced
+
+    This class represents a single Outsourced Part project
  */
 package Model;
 
@@ -13,6 +18,16 @@ public class Outsourced extends Part
 {
     private String companyName;
     
+    /**
+     * Outsourced part constructor
+     * @param id
+     * @param name
+     * @param price
+     * @param stock
+     * @param min
+     * @param max
+     * @param companyName 
+     */
     public Outsourced(int id, String name, double price, int stock, 
                       int min, int max, String companyName)
     {
@@ -20,11 +35,19 @@ public class Outsourced extends Part
         setCompanyName(companyName);
     }
     
+    /**
+     * Sets company name
+     * @param companyName 
+     */
     public void setCompanyName(String companyName)
     {
         this.companyName = companyName;
     }
     
+    /**
+     * Gets company name
+     * @return 
+     */
     public String getCompanyName()
     {
         return companyName;
