@@ -101,8 +101,8 @@
             </Pane>
             <Pane layoutX="221.0" layoutY="9.0" prefHeight="547.0" prefWidth="488.0">
                <children>
-                  <TextField fx:id="search_field" layoutX="133.0" layoutY="2.0" onAction="#onEnter" prefHeight="25.0" prefWidth="153.0" />
-                  <Button fx:id="search_button" layoutX="286.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#search" prefHeight="25.0" prefWidth="68.0" text="Search" />
+                  <TextField fx:id="search_field" layoutX="133.0" layoutY="2.0" onAction="#onEnter" onKeyReleased="#quick_search" prefHeight="25.0" prefWidth="153.0" />
+                  <Button fx:id="search_button" layoutX="286.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#button_search" prefHeight="25.0" prefWidth="68.0" text="Search" />
                   <Button fx:id="cancel_button" layoutX="393.0" layoutY="508.0" mnemonicParsing="false" onMouseClicked="#cancel" prefHeight="25.0" prefWidth="81.0" text="Cancel" />
                   <Button fx:id="save_button" layoutX="307.0" layoutY="508.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="25.0" prefWidth="81.0" text="Save" />
                   <GridPane layoutX="9.0" layoutY="42.0" prefHeight="431.0" prefWidth="473.0" style="-fx-border-color: grey; -fx-border-width: 2;">
@@ -118,7 +118,7 @@
                            <children>
                               <ScrollPane prefHeight="180.0" prefWidth="467.0">
                                  <content>
-                                    <TableView fx:id="parts_table" prefHeight="178.0" prefWidth="465.0">
+                                    <TableView fx:id="part_table" prefHeight="178.0" prefWidth="465.0">
                                       <columns>
                                         <TableColumn prefWidth="114.0" text="Part ID">
                                           <cellValueFactory>
