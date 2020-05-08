@@ -6,6 +6,7 @@
 package Controllers;
 
 import Model.Inventory;
+import Model.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -65,6 +66,7 @@ public class AddProductController implements Initializable {
     private TableColumn<?, ?> stock;
     @FXML
     private TableColumn<?, ?> price;
+    private int product_id;
 
     /**
      * Initializes the controller class.
@@ -127,8 +129,10 @@ public class AddProductController implements Initializable {
         // TODO
     }
     
-    public void setInventory(Inventory inv)
+    public void setup(Inventory inv, int product_id)
     {
         this.inv = inv;
+        this.product_id = product_id;
+        //  Display product info
     }
 }
