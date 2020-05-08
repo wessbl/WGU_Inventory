@@ -86,6 +86,7 @@ public class MainScreenController implements Initializable {
         if(confirm("Delete Part", "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
             inv.deletePart(selection);
+        searchPart();
     }
     
     private boolean confirm(String title, String header, String text)
@@ -139,6 +140,7 @@ public class MainScreenController implements Initializable {
                 "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
             inv.deleteProduct(selection);
+        searchProduct();
     }
     
     private void invalidValueError(String header, String msg)
@@ -223,10 +225,15 @@ public class MainScreenController implements Initializable {
         //  Add confirmation for window close
         Platform.setImplicitExit(false);
         stage.setOnCloseRequest((WindowEvent event1) -> {
-            if(!confirm("Exit",
+            if(confirm("Exit",
                     "Are you sure you want to exit the application?",
                     "Your changes will not be saved."))
+            {
+                Platform.exit();
+            } else {
                 event1.consume();
+            }
+            
         });
         
         //  Show new stage

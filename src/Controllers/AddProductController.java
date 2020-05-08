@@ -255,6 +255,7 @@ public class AddProductController implements Initializable {
             return;
         }
         parts.remove(sel);
+        search();
     }
     
     //  Creates error popup

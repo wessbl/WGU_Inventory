@@ -251,6 +251,7 @@ public class ModifyProductController implements Initializable {
             return;
         }
         new_parts.remove(sel);
+        search();
     }
     
     //  Creates error popup
