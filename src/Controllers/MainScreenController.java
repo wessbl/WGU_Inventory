@@ -78,16 +78,14 @@ public class MainScreenController implements Initializable {
     @FXML
     private void delete_part(MouseEvent event) {
         Part selection = part_table.getSelectionModel().getSelectedItem();
-        if (selection != null && confirm("Delete Part", 
-                "Are you sure you want to delete this part?", 
+        if (selection == null)
+        {
+            invalidValueError("No item selected", "Please select an item, then try again.");
+            return;
+        }
+        if(confirm("Delete Part", "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
             inv.deletePart(selection);
-        else
-        {
-            invalidValueError("Invalid selection", "Please select a part to be deleted.");
-        }
-        searchPart();
-        part_table.refresh();
     }
     
     private boolean confirm(String title, String header, String text)
@@ -97,15 +95,16 @@ public class MainScreenController implements Initializable {
         alert.setHeaderText(header);
         alert.setContentText(text);
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            return true;
-        } else {
-            return false;
-        }
+        return result.get() == ButtonType.OK;
     }
 
     @FXML
     private void modify_part(MouseEvent event) throws IOException {
+        if (part_table.getSelectionModel().getSelectedItem() == null)
+        {
+            invalidValueError("No item selected", "Please select an item, then try again.");
+            return;
+        }
         ChangeWindow("ModifyPart", event);
     }
 
@@ -131,16 +130,15 @@ public class MainScreenController implements Initializable {
     @FXML
     private void delete_product(MouseEvent event) {
         Product selection = product_table.getSelectionModel().getSelectedItem();
-        if (selection != null && confirm("Delete Part", 
+        if (selection == null)
+        {
+            invalidValueError("No item selected", "Please select an item, then try again.");
+            return;
+        }
+        if (confirm("Delete Part", 
                 "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
             inv.deleteProduct(selection);
-        else
-        {
-            invalidValueError("Invalid selection", "Please select a product to be deleted.");
-        }
-        searchProduct();
-        part_table.refresh();
     }
     
     private void invalidValueError(String header, String msg)
@@ -155,6 +153,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void modify_product(MouseEvent event) throws IOException {
+        if (product_table.getSelectionModel().getSelectedItem() == null)
+        {
+            invalidValueError("No item selected", "Please select an item, then try again.");
+            return;
+        }
         ChangeWindow("ModifyProduct", event);
     }
 
@@ -194,22 +197,26 @@ public class MainScreenController implements Initializable {
         //  Set controller for new window
         switch(window)
         {
-            case "ModifyPart":
-                ModifyPartController modPartCtrl = loader.getController();
-                modPartCtrl.setInventory(inv);
-                break;
             case "AddPart":
                 AddPartController addPartCtrl = loader.getController();
-                addPartCtrl.setup(inv, getPartID());
+                addPartCtrl.setup(inv, genPartID());
                 break;
-            case "ModifyProduct":
-                ModifyProductController modProdCtrl = loader.getController();
-                modProdCtrl.setInventory(inv);
+                
+            case "ModifyPart":
+                ModifyPartController modPartCtrl = loader.getController();
+                modPartCtrl.setup(inv, part_table.getSelectionModel().getSelectedItem());
                 break;
+                
             case "AddProduct":
                 AddProductController addProdCtrl = loader.getController();
-                addProdCtrl.setInventory(inv);
+                addProdCtrl.setup(inv, genProductID());
                 break;
+                
+            case "ModifyProduct":
+                ModifyProductController modProdCtrl = loader.getController();
+                modProdCtrl.setup(inv, product_table.getSelectionModel().getSelectedItem());
+                break;
+                
             default:
                 throw new IOException("Given invalid window descriptor: " + window);
         }
@@ -230,7 +237,7 @@ public class MainScreenController implements Initializable {
     }
     
     //  Generates next Part ID
-    private int getPartID()
+    private int genPartID()
     {
         int max = 0;
         for (Part p : inv.getAllParts())
@@ -240,7 +247,7 @@ public class MainScreenController implements Initializable {
     }
     
     //  Generates next Product ID
-    private int getProductID()
+    private int genProductID()
     {
         int max = 0;
         for (Product p : inv.getAllProducts())

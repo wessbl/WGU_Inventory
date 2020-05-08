@@ -67,12 +67,12 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <RadioButton layoutX="157.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#in_house" prefHeight="18.0" prefWidth="107.0" selected="true" text="In-House">
+                  <RadioButton fx:id="inhouse_button" layoutX="157.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#in_house" prefHeight="18.0" prefWidth="107.0" selected="true" text="In-House">
                      <toggleGroup>
                         <ToggleGroup fx:id="Part_Type" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton layoutX="301.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#outsourced" text="Outsourced" toggleGroup="$Part_Type" />
+                  <RadioButton fx:id="outsourced_button" layoutX="301.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#outsourced" text="Outsourced" toggleGroup="$Part_Type" />
                </children>
             </Pane>
             <GridPane layoutX="43.0" layoutY="58.0" prefHeight="248.0" prefWidth="531.0">

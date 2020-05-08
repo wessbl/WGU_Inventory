@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="487.0" prefWidth="715.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyProductController">
+<VBox prefHeight="487.0" prefWidth="715.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyProductController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -79,13 +80,13 @@
                      <children>
                         <Label text="ID" />
                         <Label text="Name" GridPane.rowIndex="1" />
-                        <Label text="Inv" GridPane.rowIndex="2" />
+                        <Label text="Stock" GridPane.rowIndex="2" />
                         <Label text="Price" GridPane.rowIndex="3" />
                         <Label text="Max" GridPane.rowIndex="4" />
                         <Label prefHeight="18.0" prefWidth="70.0" text="Min" GridPane.rowIndex="5" />
                         <TextField fx:id="id_field" editable="false" onAction="#onEnter" promptText="AutoGen - Disabled" GridPane.columnIndex="1" />
                         <TextField fx:id="name_field" onAction="#onEnter" promptText="Product Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="inv_field" onAction="#onEnter" promptText="Inv" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="stock_field" onAction="#onEnter" promptText="Stock" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="price_field" onAction="#onEnter" promptText="Price" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="max_field" onAction="#onEnter" promptText="Max" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <TextField fx:id="min_field" onAction="#onEnter" promptText="Min" GridPane.columnIndex="1" GridPane.rowIndex="5" />
@@ -117,12 +118,28 @@
                            <children>
                               <ScrollPane prefHeight="180.0" prefWidth="467.0">
                                  <content>
-                                    <TableView fx:id="parts_table" prefHeight="179.0" prefWidth="451.0">
+                                    <TableView fx:id="parts_table" prefHeight="178.0" prefWidth="465.0">
                                       <columns>
-                                        <TableColumn fx:id="id" prefWidth="114.0" text="Part ID" />
-                                        <TableColumn fx:id="name" prefWidth="114.0" text="Part Name" />
-                                          <TableColumn fx:id="stock" prefWidth="114.0" text="Inventory Level" />
-                                          <TableColumn fx:id="price" prefWidth="114.0" text="Price per Unit" />
+                                        <TableColumn prefWidth="114.0" text="Part ID">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="id" />
+                                          </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="114.0" text="Part Name">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="name" />
+                                          </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="114.0" text="Stock">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="stock" />
+                                          </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="114.0" text="Price per Unit">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="price" />
+                                          </cellValueFactory>
+                                        </TableColumn>
                                       </columns>
                                     </TableView>
                                  </content>
@@ -135,12 +152,28 @@
                               <Button fx:id="delete_button" layoutX="392.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#delete" prefHeight="26.0" prefWidth="68.0" text="Delete" />
                               <ScrollPane prefHeight="180.0" prefWidth="467.0">
                                  <content>
-                                    <TableView fx:id="added_parts_table" prefHeight="179.0" prefWidth="451.0">
+                                    <TableView fx:id="added_parts_table" prefHeight="178.0" prefWidth="465.0">
                                        <columns>
-                                          <TableColumn prefWidth="114.0" text="Part ID" />
-                                          <TableColumn prefWidth="114.0" text="Part Name" />
-                                          <TableColumn prefWidth="114.0" text="Inventory Level" />
-                                          <TableColumn prefWidth="114.0" text="Price per Unit" />
+                                        <TableColumn prefWidth="114.0" text="Part ID">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="id" />
+                                          </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="114.0" text="Part Name">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="name" />
+                                          </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="114.0" text="Stock">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="stock" />
+                                          </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="114.0" text="Price per Unit">
+                                          <cellValueFactory>
+                                            <PropertyValueFactory property="price" />
+                                          </cellValueFactory>
+                                        </TableColumn>
                                        </columns>
                                     </TableView>
                                  </content>

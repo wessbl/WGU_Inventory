@@ -6,6 +6,7 @@
 package Controllers;
 
 import Model.Inventory;
+import Model.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -127,9 +128,10 @@ public class ModifyProductController implements Initializable {
         // TODO
     }
     
-    public void setInventory(Inventory inv)
+    public void setup(Inventory inv, Product p)
     {
         this.inv = inv;
+        // Display product
     }
 
 }

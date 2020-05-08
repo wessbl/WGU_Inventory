@@ -86,15 +86,18 @@ public class AddPartController implements Initializable {
     //  A generic method that checks the entered data, and saves if valid. Returns success or fail
     private boolean save()
     {
+        String name = name_field.getText().trim();
+        String com_mach = com_mach_field.getText().trim();
+        
         //  Verify text boxes are filled out (we'll check numbers later)
-        if (name_field.getText().trim().isEmpty())
+        if (name.isEmpty())
         {
             InvalidValueError("The \"Name\" field cannot be empty");
             name_field.requestFocus();
             return false;
         }
         
-        if (com_mach_field.getText().trim().isEmpty())
+        if (com_mach.isEmpty())
         {
             InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field cannot be empty");
             com_mach_field.requestFocus();
@@ -102,7 +105,7 @@ public class AddPartController implements Initializable {
         }
         
         //  Check stock is an int
-        try{int stock = Integer.parseInt(stock_field.getText());}
+        try{Integer.parseInt(stock_field.getText());}
         catch (NumberFormatException e)
         {
             //  Error window: "Stock must be an integer"
@@ -110,9 +113,10 @@ public class AddPartController implements Initializable {
             stock_field.requestFocus();
             return false;
         }
+        int stock = Integer.parseInt(stock_field.getText());
         
         //  Check price is a double
-        try{double price = Double.parseDouble(price_field.getText());}
+        try{Double.parseDouble(price_field.getText());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Price/Cost\" must be a number.");
@@ -122,7 +126,7 @@ public class AddPartController implements Initializable {
         double price = Double.parseDouble(price_field.getText());
         
         //  Check if max is an int
-        try{int max = Integer.parseInt(max_field.getText());}
+        try{Integer.parseInt(max_field.getText());}
         catch (NumberFormatException e)
         {
             //  Error window: "Max must be an integer"
@@ -130,18 +134,21 @@ public class AddPartController implements Initializable {
             max_field.requestFocus();
             return false;
         }
+        int max = Integer.parseInt(max_field.getText());
         
         //  Check if min is an int
-        try{int min = Integer.parseInt(min_field.getText());}
+        try{Integer.parseInt(min_field.getText());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Min\" must be an integer.");
             min_field.requestFocus();
             return false;
         }
+        int min   = Integer.parseInt(min_field.getText()   );
         
-        //  Check if machine id is an int (for In-House
-        if (inhouse_button.isSelected())
+        //  Check if machine id is an int (for In-House)
+        boolean inHouse = inhouse_button.isSelected();
+        if (inHouse)
         {
             try
             {
@@ -153,23 +160,17 @@ public class AddPartController implements Initializable {
                 return false;
             }
         }
-        
+
         // Check for valid integer values: Min, Max, Stock
-        int stock = Integer.parseInt(stock_field.getText() );
-        int min   = Integer.parseInt(min_field.getText()   );
-        int max   = Integer.parseInt(max_field.getText()   );
-        
         if (min < 0)
         {
             InvalidValueError("Min must be 0 or greater");
-            min_field.setText("");
             min_field.requestFocus();
             return false;
         }
         if (max < 1)
         {
             InvalidValueError("Max must be 1 or greater");
-            max_field.setText("");
             max_field.requestFocus();
             return false;
         }
@@ -191,24 +192,24 @@ public class AddPartController implements Initializable {
         {
             inv.addPart(new InHouse(
                     part_id, 
-                    name_field.getText().trim(), 
+                    name,
                     price,
                     stock,
                     min,
                     max,
-                    Integer.parseInt(com_mach_field.getText())
+                    Integer.parseInt(com_mach)
             ));
         }
         else if (outsourced_button.isSelected())
         {
             inv.addPart(new Outsourced(
                     part_id,
-                    name_field.getText().trim(),
+                    name,
                     price,
                     stock,
                     min,
                     max,
-                    com_mach_field.getText().trim()
+                    com_mach
             ));
         }
         
@@ -287,5 +288,6 @@ public class AddPartController implements Initializable {
     {
         this.inv = inv;
         this.part_id = part_id;
+        id_field.setText(Integer.toString(part_id));
     }
 }

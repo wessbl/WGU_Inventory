@@ -5,7 +5,10 @@
  */
 package Controllers;
 
+import Model.InHouse;
 import Model.Inventory;
+import Model.Outsourced;
+import Model.Part;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -38,7 +42,7 @@ public class ModifyPartController implements Initializable {
     @FXML
     private TextField name_field;
     @FXML
-    private TextField inv_field;
+    private TextField stock_field;
     @FXML
     private TextField price_field;
     @FXML
@@ -53,21 +57,23 @@ public class ModifyPartController implements Initializable {
     private Label com_mach_label;
     @FXML
     private TextField com_mach_field;
+    @FXML
+    private RadioButton inhouse_button;
+    @FXML
+    private RadioButton outsourced_button;
+    
     private Inventory inv;
+    private Part part;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO set on close request?
-
         // Default to In-House option
         id_field.setDisable(true);
         com_mach_label.setText("Machine ID");
         com_mach_field.setPromptText("Mach ID");
-        
-        //  TODO auto-populate values
     }
 
     @FXML
@@ -79,75 +85,91 @@ public class ModifyPartController implements Initializable {
     //  A generic method that checks the entered data, and saves if valid. Returns success or fail
     private boolean save()
     {
+        String name = name_field.getText().trim();
+        String com_mach = com_mach_field.getText().trim();
+        
         //  Verify text boxes are filled out (we'll check numbers later)
-        if (name_field.getText().trim().isEmpty())
+        if (name.isEmpty())
         {
             InvalidValueError("The \"Name\" field cannot be empty");
             name_field.requestFocus();
             return false;
         }
-        // TODO is company/machine id necessary?
-        if (com_mach_field.getText().trim().isEmpty())
+        
+        if (com_mach.isEmpty())
         {
             InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field cannot be empty");
             com_mach_field.requestFocus();
             return false;
         }
         
-        //  Check inv is an int
-        try{int inv = Integer.parseInt(inv_field.getText());}
+        //  Check stock is an int
+        try{Integer.parseInt(stock_field.getText());}
         catch (NumberFormatException e)
         {
-            //  Error window: "Inv must be an integer"
-            InvalidValueError("The value for \"Inv\" must be an integer.");
-            inv_field.requestFocus();
+            //  Error window: "Stock must be an integer"
+            InvalidValueError("The value for \"Stock\" must be an integer.");
+            stock_field.requestFocus();
             return false;
         }
+        int stock = Integer.parseInt(stock_field.getText());
         
         //  Check price is a double
-        try{double price = Double.parseDouble(price_field.getText());}
+        try{Double.parseDouble(price_field.getText());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Price/Cost\" must be a number.");
             price_field.requestFocus();
             return false;
         }
+        double price = Double.parseDouble(price_field.getText());
         
         //  Check if max is an int
-        try{int max = Integer.parseInt(max_field.getText());}
+        try{Integer.parseInt(max_field.getText());}
         catch (NumberFormatException e)
         {
-            //  TODO Error window: "Max must be an integer"
+            //  Error window: "Max must be an integer"
             InvalidValueError("The value for \"Max\" must be an integer.");
             max_field.requestFocus();
             return false;
         }
+        int max = Integer.parseInt(max_field.getText());
         
         //  Check if min is an int
-        try{int min = Integer.parseInt(min_field.getText());}
+        try{Integer.parseInt(min_field.getText());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Min\" must be an integer.");
             min_field.requestFocus();
             return false;
         }
+        int min   = Integer.parseInt(min_field.getText()   );
         
-        // Check for valid integer values: Min, Max, Inv
-        int inv = Integer.parseInt(inv_field.getText());
-        int min = Integer.parseInt(min_field.getText());
-        int max = Integer.parseInt(max_field.getText());
-        
+        //  Check if machine id is an int (for In-House)
+        boolean inHouse = inhouse_button.isSelected();
+        if (inHouse)
+        {
+            try
+            {
+                Integer.parseInt(com_mach_field.getText());
+            } catch (NumberFormatException e)
+            {
+                InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field must be an int");
+                com_mach_field.requestFocus();
+                return false;
+            }
+        }
+
+        // Check for valid integer values: Min, Max, Stock
         if (min < 0)
         {
             InvalidValueError("Min must be 0 or greater");
-            min_field.setText("");
             min_field.requestFocus();
             return false;
         }
         if (max < 1)
         {
             InvalidValueError("Max must be 1 or greater");
-            max_field.setText("");
             max_field.requestFocus();
             return false;
         }
@@ -157,14 +179,78 @@ public class ModifyPartController implements Initializable {
             min_field.requestFocus();
             return false;
         }
-        if (inv > max || inv < min)
+        if (stock > max || stock < min)
         {
-            InvalidValueError("The value for \"Inv\" must be between Min and Max.");
-            inv_field.requestFocus();
+            InvalidValueError("The value for \"Stock\" must be between Min and Max.");
+            stock_field.requestFocus();
             return false;
         }
         
-        // TODO Do your saving...
+        /*
+        Save the data:
+            We need 4 different ways of saving:
+                - Original part was In-house, and this value did not change
+                - Original part was In-house, but this value changed
+                - Original part was Outsourced, and this value did not change
+                - Original part was Outsourced, but value changed
+        
+            If the value did not change, simply update it.
+            If it changed, add the new, delete the old
+        */
+        boolean inHouse_part = part instanceof InHouse;
+        
+        if (inHouse_part)
+        {
+            if (inHouse)    //  From inHouse to inHouse
+            {
+                part.setName(name_field.getText().trim());
+                part.setPrice(price);
+                part.setStock(stock);
+                part.setMax(max);
+                part.setMin(min);
+                ((InHouse) part).setMachineId(Integer.parseInt(com_mach_field.getText()));
+            }
+            
+            else            //  From inHouse to Outsourced
+            {
+                inv.addPart(new Outsourced(
+                    part.getId(),
+                    name_field.getText().trim(), 
+                    price,
+                    stock,
+                    min,
+                    max,
+                    com_mach
+                ));
+                inv.deletePart(part);
+            }
+        }
+        
+        else //Oursourced originally
+        {
+            if (!inHouse)   //  From Outsourced to Outsourced
+            {
+                part.setName(name_field.getText().trim());
+                part.setPrice(price);
+                part.setStock(stock);
+                part.setMax(max);
+                part.setMin(min);
+                ((Outsourced) part).setCompanyName(com_mach);
+            }
+            else            //  From Outsourced to InHouse
+            {
+                inv.addPart(new InHouse(
+                    part.getId(),
+                    name_field.getText().trim(), 
+                    price,
+                    stock,
+                    min,
+                    max,
+                    Integer.parseInt(com_mach)
+                ));
+                inv.deletePart(part);
+            }
+        }
         
         return true;
     }
@@ -236,8 +322,27 @@ public class ModifyPartController implements Initializable {
         }
     }
     
-    public void setInventory(Inventory inv)
+    public void setup(Inventory inv, Part p)
     {
         this.inv = inv;
+        this.part = p;
+        
+        //  Display type specific data
+        if (p instanceof InHouse)
+        {
+            inhouse_button.setSelected(true);
+            com_mach_field.setText(Integer.toString(((InHouse) p).getMachineId()));
+        }
+        else
+        {
+            outsourced_button.setSelected(true);
+            com_mach_field.setText(((Outsourced) p).getCompanyName());
+        }
+        id_field.setText(Integer.toString(p.getId()));
+        name_field.setText(p.getName());
+        stock_field.setText(Integer.toString(p.getStock()));
+        price_field.setText(Double.toString(p.getPrice()));
+        max_field.setText(Integer.toString(p.getMax()));
+        min_field.setText(Integer.toString(p.getMin()));
     }
 }
