@@ -1,7 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: ModifyPartController
+
+    This class controls the ModifyPart view. It validates and sends entered data
+    to the model for storage. It must be given variables as specified by the
+    setup() method in order to modify and preserve data among all windows in the
+    project.
  */
 package Controllers;
 
@@ -104,7 +112,7 @@ public class ModifyPartController implements Initializable {
         }
         
         //  Check stock is an int
-        try{Integer.parseInt(stock_field.getText());}
+        try{Integer.parseInt(stock_field.getText().trim());}
         catch (NumberFormatException e)
         {
             //  Error window: "Stock must be an integer"
@@ -112,20 +120,20 @@ public class ModifyPartController implements Initializable {
             stock_field.requestFocus();
             return false;
         }
-        int stock = Integer.parseInt(stock_field.getText());
+        int stock = Integer.parseInt(stock_field.getText().trim());
         
         //  Check price is a double
-        try{Double.parseDouble(price_field.getText());}
+        try{Double.parseDouble(price_field.getText().trim());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Price/Cost\" must be a number.");
             price_field.requestFocus();
             return false;
         }
-        double price = Double.parseDouble(price_field.getText());
+        double price = Double.parseDouble(price_field.getText().trim());
         
         //  Check if max is an int
-        try{Integer.parseInt(max_field.getText());}
+        try{Integer.parseInt(max_field.getText().trim());}
         catch (NumberFormatException e)
         {
             //  Error window: "Max must be an integer"
@@ -133,17 +141,17 @@ public class ModifyPartController implements Initializable {
             max_field.requestFocus();
             return false;
         }
-        int max = Integer.parseInt(max_field.getText());
+        int max = Integer.parseInt(max_field.getText().trim());
         
         //  Check if min is an int
-        try{Integer.parseInt(min_field.getText());}
+        try{Integer.parseInt(min_field.getText().trim());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Min\" must be an integer.");
             min_field.requestFocus();
             return false;
         }
-        int min   = Integer.parseInt(min_field.getText()   );
+        int min   = Integer.parseInt(min_field.getText().trim());
         
         //  Check if machine id is an int (for In-House)
         boolean inHouse = inhouse_button.isSelected();
@@ -151,7 +159,7 @@ public class ModifyPartController implements Initializable {
         {
             try
             {
-                Integer.parseInt(com_mach_field.getText());
+                Integer.parseInt(com_mach_field.getText().trim());
             } catch (NumberFormatException e)
             {
                 InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field must be an int");
@@ -203,19 +211,19 @@ public class ModifyPartController implements Initializable {
         {
             if (inHouse)    //  From inHouse to inHouse
             {
-                part.setName(name_field.getText().trim());
+                part.setName(name);
                 part.setPrice(price);
                 part.setStock(stock);
                 part.setMax(max);
                 part.setMin(min);
-                ((InHouse) part).setMachineId(Integer.parseInt(com_mach_field.getText()));
+                ((InHouse) part).setMachineId(Integer.parseInt(com_mach));
             }
             
             else            //  From inHouse to Outsourced
             {
                 inv.addPart(new Outsourced(
                     part.getId(),
-                    name_field.getText().trim(), 
+                    name, 
                     price,
                     stock,
                     min,
@@ -230,7 +238,7 @@ public class ModifyPartController implements Initializable {
         {
             if (!inHouse)   //  From Outsourced to Outsourced
             {
-                part.setName(name_field.getText().trim());
+                part.setName(name);
                 part.setPrice(price);
                 part.setStock(stock);
                 part.setMax(max);
@@ -241,7 +249,7 @@ public class ModifyPartController implements Initializable {
             {
                 inv.addPart(new InHouse(
                     part.getId(),
-                    name_field.getText().trim(), 
+                    name, 
                     price,
                     stock,
                     min,

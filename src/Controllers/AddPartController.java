@@ -1,7 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: AddPartController
+
+    This class controls the AddPart view. It validates and sends entered data to
+    the model for storage. It must be given variables as specified by the
+    setup() method in order to preserve data among all windows in the project.
  */
 package Controllers;
 
@@ -77,13 +84,22 @@ public class AddPartController implements Initializable {
         com_mach_field.setPromptText("Mach ID");
     }
 
+    /**
+     * Goes back to MainScreen immediately, no confirmation
+     * @param event (cancel_button click)
+     * @throws IOException 
+     */
     @FXML
     private void cancel(MouseEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         ChangeWindow("MainScreen", stage);
     }
 
-    //  A generic method that checks the entered data, and saves if valid. Returns success or fail
+    /**
+     * A generic method that checks the entered data, and saves if valid. If
+     * not valid, presents an error window for user and cancels the save. 
+     * @return success or fail boolean.
+     */
     private boolean save()
     {
         String name = name_field.getText().trim();
@@ -99,13 +115,14 @@ public class AddPartController implements Initializable {
         
         if (com_mach.isEmpty())
         {
+            //  Send prompt that specifies which version of the field is needed
             InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field cannot be empty");
             com_mach_field.requestFocus();
             return false;
         }
         
         //  Check stock is an int
-        try{Integer.parseInt(stock_field.getText());}
+        try{Integer.parseInt(stock_field.getText().trim());}
         catch (NumberFormatException e)
         {
             //  Error window: "Stock must be an integer"
@@ -113,20 +130,20 @@ public class AddPartController implements Initializable {
             stock_field.requestFocus();
             return false;
         }
-        int stock = Integer.parseInt(stock_field.getText());
+        int stock = Integer.parseInt(stock_field.getText().trim());
         
         //  Check price is a double
-        try{Double.parseDouble(price_field.getText());}
+        try{Double.parseDouble(price_field.getText().trim());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Price/Cost\" must be a number.");
             price_field.requestFocus();
             return false;
         }
-        double price = Double.parseDouble(price_field.getText());
+        double price = Double.parseDouble(price_field.getText().trim());
         
         //  Check if max is an int
-        try{Integer.parseInt(max_field.getText());}
+        try{Integer.parseInt(max_field.getText().trim());}
         catch (NumberFormatException e)
         {
             //  Error window: "Max must be an integer"
@@ -134,17 +151,17 @@ public class AddPartController implements Initializable {
             max_field.requestFocus();
             return false;
         }
-        int max = Integer.parseInt(max_field.getText());
+        int max = Integer.parseInt(max_field.getText().trim());
         
         //  Check if min is an int
-        try{Integer.parseInt(min_field.getText());}
+        try{Integer.parseInt(min_field.getText().trim());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Min\" must be an integer.");
             min_field.requestFocus();
             return false;
         }
-        int min   = Integer.parseInt(min_field.getText()   );
+        int min   = Integer.parseInt(min_field.getText().trim());
         
         //  Check if machine id is an int (for In-House)
         boolean inHouse = inhouse_button.isSelected();
@@ -152,7 +169,7 @@ public class AddPartController implements Initializable {
         {
             try
             {
-                Integer.parseInt(com_mach_field.getText());
+                Integer.parseInt(com_mach);
             } catch (NumberFormatException e)
             {
                 InvalidValueError("The \"" + com_mach_field.getPromptText() + "\" field must be an int");
@@ -216,11 +233,10 @@ public class AddPartController implements Initializable {
         return true;
     }
     
-    private int stringInt (String num)
-    {
-        return Integer.parseInt(num);
-    }
-    
+    /**
+     * Popup window method, when a value is incorrect for a situation
+     * @param msg 
+     */
     private void InvalidValueError(String msg)
     {
         // Error window
@@ -231,6 +247,12 @@ public class AddPartController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Changes the view/controller back to MainScreen
+     * @param window A text that represents the window to go to
+     * @param stage The current stage
+     * @throws IOException 
+     */
     private void ChangeWindow(String window, Stage stage) throws IOException
     {
         //  Get Loader & load it
@@ -249,6 +271,10 @@ public class AddPartController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Changes form for an In-House part
+     * @param event (inHouse_button click)
+     */
     @FXML
     private void in_house(MouseEvent event) {
         com_mach_field.setText("");
@@ -256,6 +282,10 @@ public class AddPartController implements Initializable {
         com_mach_field.setPromptText("Mach ID");
     }
 
+    /**
+     * Changes form for an Outsourced part
+     * @param event (outsourced_button click)
+     */
     @FXML
     private void outsourced(MouseEvent event) {
         com_mach_field.setText("");
@@ -263,6 +293,11 @@ public class AddPartController implements Initializable {
         com_mach_field.setPromptText("Company Name");
     }
 
+    /**
+     * User can push enter in a field to save
+     * @param event (enter is pressed while editing any field on the form)
+     * @throws IOException 
+     */
     @FXML
     private void onEnter(ActionEvent event) throws IOException {
         if (save())
@@ -273,6 +308,11 @@ public class AddPartController implements Initializable {
         }
     }
 
+    /**
+     * Save button
+     * @param event (save_button click)
+     * @throws IOException 
+     */
     @FXML
     private void save_clck(MouseEvent event) throws IOException {
         if(save())
@@ -283,7 +323,12 @@ public class AddPartController implements Initializable {
         }
     }
     
-    //  Gives class necessary variables from instantiating class
+    /**
+     * Gives this class necessary variables from instantiating class. Must be
+     * called before switching to this controller's window.
+     * @param inv
+     * @param part_id 
+     */
     public void setup(Inventory inv, int part_id)
     {
         this.inv = inv;

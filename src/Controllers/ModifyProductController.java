@@ -1,7 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: ModifyProductController
+
+    This class controls the ModifyProduct view. It validates and sends entered
+    data to the model for storage. It must be given variables as specified by
+    the setup() method in order to modify and preserve data among all windows in
+    the project.
  */
 package Controllers;
 
@@ -22,7 +30,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -127,7 +134,7 @@ public class ModifyProductController implements Initializable {
         }
         
         //  Check stock is an int
-        try{Integer.parseInt(stock_field.getText());}
+        try{Integer.parseInt(stock_field.getText().trim());}
         catch (NumberFormatException e)
         {
             //  Error window: "Stock must be an integer"
@@ -135,20 +142,20 @@ public class ModifyProductController implements Initializable {
             stock_field.requestFocus();
             return;
         }
-        int stock = Integer.parseInt(stock_field.getText());
+        int stock = Integer.parseInt(stock_field.getText().trim());
         
         //  Check price is a double
-        try{Double.parseDouble(price_field.getText());}
+        try{Double.parseDouble(price_field.getText().trim());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Price/Cost\" must be a number.");
             price_field.requestFocus();
             return;
         }
-        double price = Double.parseDouble(price_field.getText());
+        double price = Double.parseDouble(price_field.getText().trim());
         
         //  Check if max is an int
-        try{Integer.parseInt(max_field.getText());}
+        try{Integer.parseInt(max_field.getText().trim());}
         catch (NumberFormatException e)
         {
             //  Error window: "Max must be an integer"
@@ -156,17 +163,17 @@ public class ModifyProductController implements Initializable {
             max_field.requestFocus();
             return;
         }
-        int max = Integer.parseInt(max_field.getText());
+        int max = Integer.parseInt(max_field.getText().trim());
         
         //  Check if min is an int
-        try{Integer.parseInt(min_field.getText());}
+        try{Integer.parseInt(min_field.getText().trim());}
         catch (NumberFormatException e)
         {
             InvalidValueError("The value for \"Min\" must be an integer.");
             min_field.requestFocus();
             return;
         }
-        int min = Integer.parseInt(min_field.getText());
+        int min = Integer.parseInt(min_field.getText().trim());
 
         // Check for valid integer values: Min, Max, Stock
         if (min < 0)

@@ -26,7 +26,7 @@ public class WGU_Inventory extends Application {
     public void start(Stage stage) throws Exception {
         //  Create Inventory
         Inventory inv = new Inventory();
-        CreateData(inv);
+        AddSampleData(inv);
         
         //  Get loader & root
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/MainScreen.fxml"));
@@ -47,7 +47,7 @@ public class WGU_Inventory extends Application {
         launch(args);
     }
 
-    private void CreateData(Inventory inv) {
+    private void AddSampleData(Inventory inv) {
         //  Create Parts
         Part nut = new InHouse(418, "Nut",     1.0, 100, 20, 300, 12);      //TODO this one labeled as Part? Should I do that to all?
         Part blt = new InHouse(123, "Bolt",    1.0, 100, 20, 300, 12);

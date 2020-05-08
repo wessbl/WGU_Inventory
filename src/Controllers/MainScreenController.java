@@ -1,7 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* * * * * * * * * * * * * * * * *
+ *  Author:     Wess Lancaster   *
+ *  Date:       May 2020         *
+ *  Project:    WGU_Inventory    *
+ * * * * * * * * * * * * * * * * *
+
+    Class: MainScreenController
+
+    This class controls the MainScreen view. It serves as a central hub for the
+    entire application, wherein it has options to open 4 other windows, which
+    all direct back to MainScreen only. It can delete parts or products on its
+    own. It must be given an Inventory by using the setInventory() method, or
+    it will start with an empty inventory.
  */
 package Controllers;
 
@@ -13,9 +22,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -66,6 +75,7 @@ public class MainScreenController implements Initializable {
     private TextField product_search_field;
     @FXML
     private Button exit_button;
+    
     private Inventory inv;
     
     /**
@@ -83,9 +93,37 @@ public class MainScreenController implements Initializable {
             invalidValueError("No item selected", "Please select an item, then try again.");
             return;
         }
+        
+        //  Look for associated parts
+        ObservableList<Product> assoc_prods = FXCollections.observableArrayList();
+        for (Product prod : inv.getAllProducts())
+            if (prod.getAllAssociatedParts().contains(selection))
+                assoc_prods.add(prod);
+        
+        //  Build a message
+        String txt;
+        if(assoc_prods.isEmpty())
+            txt = "This cannot be undone.";
+        else
+        {
+            txt = "This product has associated parts: \n";
+            for (int i = 0; i < assoc_prods.size(); i++)
+            {
+                txt += assoc_prods.get(i).getName();
+                if (i != assoc_prods.size() - 1)
+                    txt += ", ";
+                else {
+                    txt += ".";
+                }
+            }
+        }
         if(confirm("Delete Part", "Are you sure you want to delete this part?", 
-                "This cannot be undone."))
+                txt))
+        {
             inv.deletePart(selection);
+            for (Product prod : assoc_prods)
+                prod.deleteAssociatedPart(selection);
+        }
         searchPart();
     }
     
@@ -187,6 +225,7 @@ public class MainScreenController implements Initializable {
         Stage stage = (Stage) exit_button.getScene().getWindow();
         //  TODO For SQL: Unsaved Changes
         stage.close();
+        Platform.exit();
     }
     
     private void ChangeWindow(String window, MouseEvent event) throws IOException
