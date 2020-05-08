@@ -128,7 +128,7 @@ public class AddProductController implements Initializable {
     private void search()
     {
         String keyword = search_field.getText().trim();
-        ObservableList<Part> parts = inv.lookupPart(keyword);
+        ObservableList<Part> parts = Inventory.lookupPart(keyword);
         part_table.setItems(parts);
         if (parts.isEmpty())
             search_field.requestFocus();
@@ -243,7 +243,7 @@ public class AddProductController implements Initializable {
         //  Add parts to product
         for (Part p : parts)
             product.addAssociatedPart(p);
-        inv.addProduct(product);
+        Inventory.addProduct(product);
         
         //  Go back to MainScreen
         ChangeWindow("MainScreen", event);
@@ -354,7 +354,7 @@ public class AddProductController implements Initializable {
         id_field.setText(Integer.toString(product_id));
         
         //  Display Parts
-        part_table.setItems(inv.getAllParts());
+        part_table.setItems(Inventory.getAllParts());
         added_parts_table.setItems(parts);
     }
 }

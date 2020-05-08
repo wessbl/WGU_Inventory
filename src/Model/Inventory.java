@@ -20,14 +20,14 @@ import javafx.collections.ObservableList;
  * @author wessl
  */
 public class Inventory {
-    private ObservableList<Part> allParts = FXCollections.observableArrayList();
-    private ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
     
     /**
      * Adds a part to the inventory
      * @param newPart 
      */
-    public void addPart(Part newPart)
+    public static void addPart(Part newPart)
     {
         //TODO prohibit duplicates (maybe only dupe ID's... and not sure this class assigns those)
         allParts.add(newPart);
@@ -37,7 +37,7 @@ public class Inventory {
      * Adds a product to the inventory
      * @param newProduct 
      */
-    public void addProduct(Product newProduct)
+    public static void addProduct(Product newProduct)
     {
         allProducts.add(newProduct);
     }
@@ -47,13 +47,12 @@ public class Inventory {
      * @param partId
      * @return 
      */
-    public Part lookupPart(int partId)
+    public static Part lookupPart(int partId) throws Exception
     {
         for (Part p : allParts)
             if (p.getId() == partId)
                 return p;
-        //TODO this is wrong!
-        return new Part(0, "", 0, 0, 0, 0);
+        throw new Exception("lookupPart was given part ID that does not exist");
     }
     
     /**
@@ -61,13 +60,13 @@ public class Inventory {
      * @param productId
      * @return 
      */
-    public Product lookupProduct(int productId)
+    public static Product lookupProduct(int productId) throws Exception
     {
         for (Product p : allProducts)
             if (p.getId() == productId)
                 return p;
-        //TODO this is wrong!
-        return new Product(0, "", 0, 0, 0, 0);
+        throw new Exception("lookupPart was given part ID that does not exist");
+
     }
     
     /**
@@ -75,7 +74,7 @@ public class Inventory {
      * @param partName
      * @return 
      */
-    public ObservableList<Part> lookupPart(String partName)
+    public static ObservableList<Part> lookupPart(String partName)
     {
         //  Add parts with matching string sequences to "find" list
         List<Part> find = new ArrayList<Part>();
@@ -94,7 +93,7 @@ public class Inventory {
      * @param productName
      * @return 
      */
-    public ObservableList<Product> lookupProduct(String productName)
+    public static ObservableList<Product> lookupProduct(String productName)
     {
         //  Add products with matching string sequences to "find" list
         List<Product> find = new ArrayList<Product>();
@@ -113,10 +112,21 @@ public class Inventory {
      * @param index
      * @param newPart 
      */
-    public void updatePart(int index, Part newPart)
+    public static void updatePart(int index, Part newPart) throws Exception
     {
         Part p = lookupPart(index);
-        p = newPart;   //TODO test
+        p.setId(newPart.getId());
+        p.setMax(newPart.getMax());
+        p.setMin(newPart.getMin());
+        p.setName(newPart.getName());
+        p.setPrice(newPart.getPrice());
+        p.setStock(newPart.getStock());
+        if (p instanceof InHouse)
+        {
+            ((InHouse) p).setMachineId(((InHouse) newPart).getMachineId());
+        } else {
+            ((Outsourced) p).setCompanyName(((Outsourced) newPart).getCompanyName());
+        }
     }
     
     /**
@@ -124,10 +134,15 @@ public class Inventory {
      * @param index
      * @param newProduct 
      */
-    public void updateProduct(int index, Product newProduct)
+    public static void updateProduct(int index, Product newProduct) throws Exception
     {
         Product p = lookupProduct(index);
-        p = newProduct;
+        p.setId(newProduct.getId());
+        p.setMax(newProduct.getMax());
+        p.setMin(newProduct.getMin());
+        p.setName(newProduct.getName());
+        p.setPrice(newProduct.getPrice());
+        p.setStock(newProduct.getStock());
     }
     
     /**
@@ -135,7 +150,7 @@ public class Inventory {
      * @param selectedPart
      * @return 
      */
-    public boolean deletePart(Part selectedPart)
+    public static boolean deletePart(Part selectedPart)
     {
         if (allParts.contains(selectedPart))
         {
@@ -150,7 +165,7 @@ public class Inventory {
      * @param selectedProduct
      * @return 
      */
-    public boolean deleteProduct(Product selectedProduct)
+    public static boolean deleteProduct(Product selectedProduct)
     {
         if (allProducts.contains(selectedProduct))
         {
@@ -164,7 +179,7 @@ public class Inventory {
      * Gets a list of all parts
      * @return 
      */
-    public ObservableList<Part> getAllParts()
+    public static ObservableList<Part> getAllParts()
     {
         return allParts;
     }
@@ -173,7 +188,7 @@ public class Inventory {
      * Gets a list of all products
      * @return 
      */
-    public ObservableList<Product> getAllProducts()
+    public static ObservableList<Product> getAllProducts()
     {
         return allProducts;
     }

@@ -122,7 +122,7 @@ public class ModifyProductController implements Initializable {
     private void search()
     {
         String keyword = search_field.getText().trim();
-        ObservableList<Part> parts = inv.lookupPart(keyword);
+        ObservableList<Part> parts = Inventory.lookupPart(keyword);
         part_table.setItems(parts);
         if (parts.isEmpty())
             search_field.requestFocus();
@@ -143,7 +143,7 @@ public class ModifyProductController implements Initializable {
      * error window for user and cancels the save.
      */
     @FXML
-    private void save(MouseEvent event) throws IOException {
+    private void save(MouseEvent event) throws IOException, Exception {
         
         /******* Validate Data *******/
         
@@ -226,11 +226,14 @@ public class ModifyProductController implements Initializable {
         }
         
         /******* Save Data *******/
-        product.setName(name);
-        product.setPrice(price);
-        product.setStock(stock);
-        product.setMin(min);
-        product.setMax(max);
+        Inventory.updateProduct(product.getId(), new Product(
+            product.getId(),
+            name, 
+            price,
+            stock,
+            min,
+            max
+        ));
         
         //  Delete old parts from product
         for (Part p : old_parts)
@@ -240,7 +243,7 @@ public class ModifyProductController implements Initializable {
         for (Part p : new_parts)
             product.addAssociatedPart(p);
         
-//        inv.addProduct(product);
+//        Inventory.addProduct(product);
         
         //  Go back to MainScreen
         ChangeWindow("MainScreen", event);
@@ -356,7 +359,7 @@ public class ModifyProductController implements Initializable {
         }
         
         //  Set tables
-        part_table.setItems(inv.getAllParts());
+        part_table.setItems(Inventory.getAllParts());
         added_parts_table.setItems(new_parts);
         
         //  Display product data

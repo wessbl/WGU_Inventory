@@ -100,7 +100,7 @@ public class MainScreenController implements Initializable {
         
         //  Look for associated parts
         ObservableList<Product> assoc_prods = FXCollections.observableArrayList();
-        for (Product prod : inv.getAllProducts())
+        for (Product prod : Inventory.getAllProducts())
             if (prod.getAllAssociatedParts().contains(selection))
                 assoc_prods.add(prod);
         
@@ -124,7 +124,7 @@ public class MainScreenController implements Initializable {
         if(confirm("Delete Part", "Are you sure you want to delete this part?", 
                 txt))
         {
-            inv.deletePart(selection);
+            Inventory.deletePart(selection);
             for (Product prod : assoc_prods)
                 prod.deleteAssociatedPart(selection);
         }
@@ -190,7 +190,7 @@ public class MainScreenController implements Initializable {
     private void searchPart()
     {
         String keyword = part_search_field.getText().trim();
-        ObservableList<Part> parts = inv.lookupPart(keyword);
+        ObservableList<Part> parts = Inventory.lookupPart(keyword);
         part_table.setItems(parts);
         if (parts.isEmpty())
             part_search_field.requestFocus();
@@ -211,7 +211,7 @@ public class MainScreenController implements Initializable {
         if (confirm("Delete Part", 
                 "Are you sure you want to delete this part?", 
                 "This cannot be undone."))
-            inv.deleteProduct(selection);
+            Inventory.deleteProduct(selection);
         searchProduct();
     }
     
@@ -273,7 +273,7 @@ public class MainScreenController implements Initializable {
     private void searchProduct()
     {
         String keyword = product_search_field.getText().trim();
-        ObservableList<Product> prods = inv.lookupProduct(keyword);
+        ObservableList<Product> prods = Inventory.lookupProduct(keyword);
         product_table.setItems(prods);
         if (prods.isEmpty())
             product_search_field.requestFocus();
@@ -359,7 +359,7 @@ public class MainScreenController implements Initializable {
     private int genPartID()
     {
         int max = 0;
-        for (Part p : inv.getAllParts())
+        for (Part p : Inventory.getAllParts())
             if (p.getId() > max)
                 max = p.getId();
         return max + 1;
@@ -372,7 +372,7 @@ public class MainScreenController implements Initializable {
     private int genProductID()
     {
         int max = 0;
-        for (Product p : inv.getAllProducts())
+        for (Product p : Inventory.getAllProducts())
             if (p.getId() > max)
                 max = p.getId();
         return max + 1;
@@ -399,8 +399,8 @@ public class MainScreenController implements Initializable {
         this.inv = inv;
         
         //  Display Parts & Products
-        part_table.setItems(inv.getAllParts());
-        product_table.setItems(inv.getAllProducts());
+        part_table.setItems(Inventory.getAllParts());
+        product_table.setItems(Inventory.getAllProducts());
     }
     
     /**

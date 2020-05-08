@@ -18,7 +18,6 @@ import Model.Outsourced;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -207,7 +206,7 @@ public class AddPartController implements Initializable {
         // Save the data:
         if (inhouse_button.isSelected())
         {
-            inv.addPart(new InHouse(
+            Inventory.addPart(new InHouse(
                     part_id, 
                     name,
                     price,
@@ -219,7 +218,7 @@ public class AddPartController implements Initializable {
         }
         else if (outsourced_button.isSelected())
         {
-            inv.addPart(new Outsourced(
+            Inventory.addPart(new Outsourced(
                     part_id,
                     name,
                     price,

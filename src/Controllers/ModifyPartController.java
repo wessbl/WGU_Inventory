@@ -100,7 +100,7 @@ public class ModifyPartController implements Initializable {
      * not valid, presents an error window for user and cancels the save. 
      * @return success or fail boolean.
      */    
-    private boolean save()
+    private boolean save() throws Exception
     {
         String name = name_field.getText().trim();
         String com_mach = com_mach_field.getText().trim();
@@ -220,43 +220,7 @@ public class ModifyPartController implements Initializable {
         {
             if (inHouse)    //  From inHouse to inHouse
             {
-                part.setName(name);
-                part.setPrice(price);
-                part.setStock(stock);
-                part.setMax(max);
-                part.setMin(min);
-                ((InHouse) part).setMachineId(Integer.parseInt(com_mach));
-            }
-            
-            else            //  From inHouse to Outsourced
-            {
-                inv.addPart(new Outsourced(
-                    part.getId(),
-                    name, 
-                    price,
-                    stock,
-                    min,
-                    max,
-                    com_mach
-                ));
-                inv.deletePart(part);
-            }
-        }
-        
-        else //Oursourced originally
-        {
-            if (!inHouse)   //  From Outsourced to Outsourced
-            {
-                part.setName(name);
-                part.setPrice(price);
-                part.setStock(stock);
-                part.setMax(max);
-                part.setMin(min);
-                ((Outsourced) part).setCompanyName(com_mach);
-            }
-            else            //  From Outsourced to InHouse
-            {
-                inv.addPart(new InHouse(
+                Inventory.updatePart(part.getId(), new InHouse(
                     part.getId(),
                     name, 
                     price,
@@ -265,7 +229,49 @@ public class ModifyPartController implements Initializable {
                     max,
                     Integer.parseInt(com_mach)
                 ));
-                inv.deletePart(part);
+            }
+            
+            else            //  From inHouse to Outsourced
+            {
+                Inventory.addPart(new Outsourced(
+                    part.getId(),
+                    name, 
+                    price,
+                    stock,
+                    min,
+                    max,
+                    com_mach
+                ));
+                Inventory.deletePart(part);
+            }
+        }
+        
+        else //Oursourced originally
+        {
+            if (!inHouse)   //  From Outsourced to Outsourced
+            {               
+                Inventory.updatePart(part.getId(), new Outsourced(
+                    part.getId(),
+                    name, 
+                    price,
+                    stock,
+                    min,
+                    max,
+                    com_mach
+                ));
+            }
+            else            //  From Outsourced to InHouse
+            {
+                Inventory.addPart(new InHouse(
+                    part.getId(),
+                    name, 
+                    price,
+                    stock,
+                    min,
+                    max,
+                    Integer.parseInt(com_mach)
+                ));
+                Inventory.deletePart(part);
             }
         }
         
@@ -338,7 +344,7 @@ public class ModifyPartController implements Initializable {
      * @throws IOException 
      */
     @FXML
-    private void onEnter(ActionEvent event) throws IOException {
+    private void onEnter(ActionEvent event) throws IOException, Exception {
         if (save())
         {
             //  Go back to MainScreen
@@ -353,7 +359,7 @@ public class ModifyPartController implements Initializable {
      * @throws IOException 
      */
     @FXML
-    private void save_click(MouseEvent event) throws IOException {
+    private void save_click(MouseEvent event) throws IOException, Exception {
         if(save())
         {
             //  Go back to MainScreen

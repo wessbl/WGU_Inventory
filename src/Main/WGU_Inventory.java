@@ -58,7 +58,7 @@ public class WGU_Inventory extends Application {
      */
     private void AddSampleData(Inventory inv) {
         //  Create Parts
-        Part nut = new InHouse(418, "Nut",     1.0, 100, 20, 300, 12);      //TODO this one labeled as Part? Should I do that to all?
+        Part nut = new InHouse(418, "Nut",     1.0, 100, 20, 300, 12);
         Part blt = new InHouse(123, "Bolt",    1.0, 100, 20, 300, 12);
         Part mtr = new InHouse(81,  "Motor",   25,  20,  10, 40,  3 );
         Part sdr = new InHouse(214, "Solder",  1.0, 100, 20, 150, 2 );
@@ -115,7 +115,7 @@ public class WGU_Inventory extends Application {
         brn.addAssociatedPart(ion);
         
         //  Add items to inv
-        inv.addPart(nut);
+        Inventory.addPart(nut);
         inv.addPart(blt);
         inv.addPart(mtr);
         inv.addPart(sdr);
