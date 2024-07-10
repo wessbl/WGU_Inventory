@@ -32,13 +32,13 @@ public class WGU_Inventory extends Application {
         //  Create Inventory
         Inventory inv = new Inventory();
         AddSampleData(inv);
-        
+
         //  Get loader & root
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/MainScreen.fxml"));
         Parent root = (Parent) loader.load();
         
         //  Give inventory to controller
-	Controllers.MainScreenController c = loader.getController();
+	    Controllers.MainScreenController c = loader.getController();
         c.setInventory(inv);
         stage.setScene(new Scene(root));
         stage.setResizable(false);

@@ -28,6 +28,12 @@
                 </fileset>
             </classpath>
         </javac>
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**/*.fxml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="run" depends="compile">
