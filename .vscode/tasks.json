@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile",
+            "type": "shell",
+            "command": "ant compile",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build JAR",
+            "type": "shell",
+            "command": "ant jar",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run JAR",
+            "type": "shell",
+            "command": "ant run-jar",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create Installer",
+            "type": "shell",
+            "command": "ant package",
+            "problemMatcher": []
+        }
+    ]
+}

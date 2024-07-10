@@ -12,7 +12,7 @@
     <property name="build.dir" value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="lib.dir" value="lib"/>
-    <property name="javafx.sdk" value="C:\Program Files\Common Files\Oracle\javafx-sdk-22.0.1"/>
+    <property name="javafx.sdk" value="C:/Program Files/Common Files/Oracle/javafx-sdk-22.0.1"/>
     <property name="javafx.lib" value="${javafx.sdk}/lib"/>
 
     <target name="clean">
@@ -36,6 +36,7 @@
         </copy>
     </target>
 
+    <!-- TODO delete this section?? -->
     <target name="run" depends="compile">
         <java classname="src/Main/WGU_Inventory.java" fork="true">
             <classpath>
@@ -49,5 +50,45 @@
             <jvmarg value="--add-modules"/>
             <jvmarg value="javafx.controls,javafx.fxml"/>
         </java>
+    </target>
+
+    <!-- JAR creation target -->
+    <target name="jar" depends="compile">
+        <mkdir dir="${build.dir}/jar"/>
+        <jar destfile="${build.dir}/jar/InventoryApp.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="Main.WGU_Inventory"/>
+                <attribute name="Class-Path" value="lib/javafx-sdk/lib"/>
+            </manifest>
+            <fileset dir="${classes.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="**/*.fxml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="run-jar" depends="jar">
+        <java jar="${build.dir}/jar/InventoryApp.jar" fork="true">
+            <jvmarg value="--module-path"/>
+            <jvmarg value="${javafx.lib}"/>
+            <jvmarg value="--add-modules"/>
+            <jvmarg value="javafx.controls,javafx.fxml"/>
+        </java>
+    </target>
+
+    <target name="package" depends="jar">
+        <exec executable="jpackage">
+            <arg line="--input ${build.dir}/jar"/>
+            <arg line="--name InventoryApp"/>
+            <arg line="--main-jar InventoryApp.jar"/>
+            <arg line="--main-class Main.WGU_Inventory"/>
+            <arg line="--type exe"/>
+            <arg line="--module-path &quot;${javafx.lib}&quot;"/>
+            <arg line="--add-modules javafx.controls,javafx.fxml"/>
+            <arg line="--dest ${build.dir}/installer"/>
+        </exec>
     </target>
 </project>
