@@ -18,12 +18,6 @@
             "type": "shell",
             "command": "ant run-jar",
             "problemMatcher": []
-        },
-        {
-            "label": "Create Installer",
-            "type": "shell",
-            "command": "ant package",
-            "problemMatcher": []
         }
     ]
 }
